@@ -14,7 +14,10 @@ import json
 # truncate staging_staging schema produced by dlt together with dagster by default
 dlt.config["load.truncate_staging_dataset"] = True
 
-params = {"limit": 100, "occupation-field": "6Hq3_tKo_V57"}
+params = {
+    "limit": 100,
+    "occupation-field": ["MVqp_eS8_kDZ", "E7hm_BLq_fqZ", "ASGV_zcE_bWf"],
+}
 
 def _get_ads(url_for_search, params):
     response = requests.get(url_for_search, params=params)
