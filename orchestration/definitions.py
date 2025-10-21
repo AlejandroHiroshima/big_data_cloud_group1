@@ -84,7 +84,7 @@ job_dbt = dg.define_asset_job("job_dbt", selection=dg.AssetSelection.key_prefixe
 #schedule for the first job
 schedule_dlt = dg.ScheduleDefinition(
     job=job_dlt,
-    cron_schedule="01* * *" #En gång dagligen 01:00 UTC
+    cron_schedule="25 11 * * *" #UTC
 )
 
 # ==================== #
