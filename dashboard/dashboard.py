@@ -1,5 +1,5 @@
 import streamlit as st
-from connect_data_warehouse import query_job_listings
+from dashboard.connect_duck_pond import query_job_listings
 
 
 def layout():

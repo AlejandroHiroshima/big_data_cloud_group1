@@ -18,7 +18,7 @@ sys.path.insert(0, '../data_extract_load')
 from load_job_ads import jobads_source
 
 # data warehouse directory
-db_path = str(Path(__file__).parents[1] / "data_warehouse/job_ads.duckdb")
+db_path = str(Path(__file__).parents[1] / "duck_pond/job_ads.duckdb")
 
 # ==================== #
 #                      #
@@ -84,7 +84,7 @@ job_dbt = dg.define_asset_job("job_dbt", selection=dg.AssetSelection.key_prefixe
 #schedule for the first job
 schedule_dlt = dg.ScheduleDefinition(
     job=job_dlt,
-    cron_schedule="25 11 * * *" #UTC
+    cron_schedule="01* * *" #En gång dagligen 01:00 UTC
 )
 
 # ==================== #
