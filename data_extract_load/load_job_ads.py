@@ -15,6 +15,7 @@ import json
 dlt.config["load.truncate_staging_dataset"] = True
 
 params = {
+    "q": "",
     "limit": 100,
     "occupation-field": ["MVqp_eS8_kDZ", "E7hm_BLq_fqZ", "ASGV_zcE_bWf"],
 }
@@ -25,19 +26,35 @@ def _get_ads(url_for_search, params):
     return json.loads(response.content.decode("utf8"))
 
 
-@dlt.resource(table_name = "technical_field_job_ads",
-              write_disposition="replace",
-              )
-def jobads_resource(params):
-
+@dlt.resource(table_name = "job_ads",
+        write_disposition="replace")
+def jobsearch_resource(params):
     url = "https://jobsearch.api.jobtechdev.se"
     url_for_search = f"{url}/search"
+    limit = params.get("limit", 100)
+    offset = 0
 
-    for ad in _get_ads(url_for_search, params)["hits"]:
-        yield ad
+    while True:
+        # build this page’s params
+        page_params = dict(params, offset=offset)
+        data = _get_ads(url_for_search, page_params)
 
+        hits = data.get("hits", [])
+        if not hits:
+            # no more results
+            break
+
+        # yield each ad on this page
+        for ad in hits:
+            yield ad
+
+        # if fewer than a full page was returned, we’re done
+        if len(hits) < limit or offset > 1900:
+            break
+
+        offset += limit
 
 # dagster only works with dlt source, not dlt resource
 @dlt.source
 def jobads_source():
-    return jobads_resource(params)
+    return jobsearch_resource(params)
