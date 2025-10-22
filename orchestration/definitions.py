@@ -75,7 +75,7 @@ def dbt_models(context: dg.AssetExecutionContext, dbt: DbtCliResource):
 #                      #
 # ==================== #
 
-job_dlt = dg.define_asset_job("job_dlt", selection=dg.AssetSelection.keys("job_ads"))
+job_dlt = dg.define_asset_job("job_dlt", selection=dg.AssetSelection.keys("dlt_jobads_source_jobsearch_resource"))
 job_dbt = dg.define_asset_job("job_dbt", selection=dg.AssetSelection.key_prefixes("warehouse", "marts"))
 
 # ==================== #
@@ -99,7 +99,7 @@ execution_timezone="Europe/Stockholm"
 # ==================== #
 
 #sensor for the second job
-@dg.asset_sensor(asset_key=dg.AssetKey("job_ads"), job_name="job_dbt")
+@dg.asset_sensor(asset_key=dg.AssetKey("dlt_jobads_source_jobsearch_resource"), job_name="job_dbt")
 def dlt_load_sensor(): 
     yield dg.RunRequest()
 
