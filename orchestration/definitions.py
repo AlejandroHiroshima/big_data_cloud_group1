@@ -11,6 +11,7 @@ import dlt
 import dagster as dg
 from dagster_dlt import DagsterDltResource, dlt_assets
 from dagster_dbt import DbtCliResource, DbtProject, dbt_assets
+import os
 
 # to import dlt script
 import sys
@@ -18,7 +19,9 @@ sys.path.insert(0, '../data_extract_load')
 from load_job_ads import jobads_source
 
 # data warehouse directory
-db_path = str(Path(__file__).parents[1] / "duck_pond/job_ads.duckdb")
+# db_path = str(Path(__file__).parents[1] / "duck_pond/job_ads.duckdb")
+DUCKDB_PATH = os.getenv("DUCKDB_PATH")
+DBT_PROFILES_DIR = os.getenv("DBT_PROFILES_DIR")
 
 # ==================== #
 #                      #
@@ -33,7 +36,7 @@ dlt_resource = DagsterDltResource()
     dlt_pipeline = dlt.pipeline(
         pipeline_name="jobsearch",
         dataset_name="staging",
-        destination=dlt.destinations.duckdb(db_path),
+        destination=dlt.destinations.duckdb(DUCKDB_PATH),
     ),
 )
 def dlt_load(context: dg.AssetExecutionContext, dlt: DagsterDltResource): 
@@ -50,9 +53,9 @@ def dlt_load(context: dg.AssetExecutionContext, dlt: DagsterDltResource):
 # Points to the dbt project path
 dbt_project_directory = Path(__file__).parents[1] / "data_transformation"
 # Define the path to your profiles.yml file (in your home directory)
-profiles_dir = Path.home() / ".dbt"  
+# profiles_dir = Path.home() / ".dbt"  
 dbt_project = DbtProject(project_dir=dbt_project_directory,
-                         profiles_dir=profiles_dir)
+                         profiles_dir=DBT_PROFILES_DIR)
 
 # References the dbt project object
 dbt_resource = DbtCliResource(project_dir=dbt_project)
