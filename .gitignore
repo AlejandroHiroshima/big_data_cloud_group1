@@ -246,3 +246,7 @@ terraform.rc
 
 .tmp*
 
+*.duckdb
+
+duck_pond/
+
