@@ -92,10 +92,10 @@ def layout():
         selected_company = st.selectbox("Välj arbetsgivare:", employers, index=None)
         if selected_company:
             filtered = df_all[df_all["employer_name"] == selected_company]
-            headlines = filtered["HEADLINE"].dropna().tolist()
+            headlines = filtered["headline"].dropna().tolist()
             selected_headline = st.selectbox("Välj en jobbannons:", headlines, index=None)
             if selected_headline:
-                html_val = filtered.loc[filtered["HEADLINE"] == selected_headline, "DESCRIPTION_HTML_FORMATTED"].values
+                html_val = filtered.loc[filtered["headline"] == selected_headline, "description_html_formatted"].values
                 if len(html_val):
                     st.markdown(html_val[0], unsafe_allow_html=True)
 
