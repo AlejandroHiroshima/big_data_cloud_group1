@@ -88,10 +88,10 @@ def layout():
     cols2 = st.columns(2)
 
     with cols2[0]:
-        employers = sorted(df_all["EMPLOYER_NAME"].dropna().unique().tolist())
+        employers = sorted(df_all["employer_name"].dropna().unique().tolist())
         selected_company = st.selectbox("Välj arbetsgivare:", employers, index=None)
         if selected_company:
-            filtered = df_all[df_all["EMPLOYER_NAME"] == selected_company]
+            filtered = df_all[df_all["employer_name"] == selected_company]
             headlines = filtered["HEADLINE"].dropna().tolist()
             selected_headline = st.selectbox("Välj en jobbannons:", headlines, index=None)
             if selected_headline:
