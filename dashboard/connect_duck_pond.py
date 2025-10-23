@@ -1,19 +1,19 @@
-import os
-import pandas as pd
-import streamlit as st
-from dotenv import load_dotenv
-import duckdb
-from pathlib import Path
+# import os
+# import pandas as pd
+# import streamlit as st
+# from dotenv import load_dotenv
+# import duckdb
+# from pathlib import Path
 
 
-# duck pond directory
-db_path = str(Path(__file__).parents[1] / "duck_pond/job_ads.duckdb")
+# # duck pond directory
+# db_path = str(Path(__file__).parents[1] / "duck_pond/job_ads.duckdb")
 
-DB_PATH = os.getenv("DUCKDB_PATH")
+# DB_PATH = os.getenv("DUCKDB_PATH")
  
-def query_job_listings(query='SELECT * FROM'):
-    with duckdb.connect(DB_PATH, read_only=True) as conn:
-        return conn.query(f"{query}").df()
+# def query_job_listings(query='SELECT * FROM'):
+#     with duckdb.connect(DB_PATH, read_only=True) as conn:
+#         return conn.query(f"{query}").df()
 
 # import os
 # import pandas as pd
@@ -30,4 +30,13 @@ def query_job_listings(query='SELECT * FROM'):
 #     conn = get_connection()
 #     df = pd.read_sql(query, conn)
 #     return df
- 
+from pathlib import Path  
+import os
+import duckdb
+
+DB_PATH = os.getenv("DUCKDB_PATH")
+
+def query_job_listings(query: str):
+    # query ska vara en komplett SELECT-sats
+    with duckdb.connect(DB_PATH, read_only=True) as conn:
+        return conn.execute(query).df()
