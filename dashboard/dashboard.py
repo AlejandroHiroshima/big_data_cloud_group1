@@ -31,7 +31,7 @@ def layout():
     cols = st.columns(3)
 
     with cols[0]:
-        st.metric(label="Total antal annonser", value=int(df_all["VACANCIES"].sum()))
+        st.metric(label="Total antal annonser", value=int(df_all["vacancies"].sum()))
         st.write(f"Top 10 flest yrkesroller för {selected_occupation_field}")
         df_roles = query_job_listings(f'''
             SELECT
