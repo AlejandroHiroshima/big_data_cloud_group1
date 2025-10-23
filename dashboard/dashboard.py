@@ -142,22 +142,23 @@ def layout():
         "Säkerhet och bevakning": "mart_sb",
         "Transport, distribution, lager": "mart_tdl",
     }
-
+    
     selected_occupation_field = st.selectbox(
-        "Välj yrkeskategori", options=choices.keys(), index=None
+        "Välj yrkeskategori", options=list(choices.keys()), index=None
     )
 
-    # if not selected_occupation_field:
-    #     st.info("Välj en yrkeskategori för att visa data.")
-    #     return
+    if not selected_occupation_field:
+        st.info("Välj en yrkeskategori för att visa data.")
+        return
 
-    # table = choices[selected_occupation_field]
-    if selected_occupation_field:
-        df_all = query_job_listings(f"SELECT * FROM {choices[selected_occupation_field]}")
-        st.dataframe(df_all)
-        
+    table = choices[selected_occupation_field]
+    df_all = query_job_listings(f"SELECT * FROM {table}")
+    st.dataframe(df_all, use_container_width=True)
+
 if __name__ == "__main__":
     layout()
+
+
     #     cols = st.columns(3)
 
     #     with cols[0]:
