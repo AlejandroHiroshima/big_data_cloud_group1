@@ -13,8 +13,6 @@ services:
     build:
       context: .
       dockerfile: dockerfile.dashboard
-    volumes:
-      #read-only bind mount
-      - ./duck_pond:/duck_pond:ro
     ports:
       - "8501:8501"
+    image: crgrupp1.azurecr.io/dashboard:latest
