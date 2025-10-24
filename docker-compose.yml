@@ -5,13 +5,9 @@ services:
     build:
       context: .
       dockerfile: dockerfile.dwh
-    volumes:
-      #read-only bind mount
-      - ${HOME}/.dbt/profiles.yml:/pipeline/profiles.yml:ro
-      #blind mount
-      - ./duck_pond:/duck_pond
     ports:
       - "3000:3000"
+    image: crgrupp1.azurecr.io/hr-pipeline:latest
 
   dashboard:
     build:
