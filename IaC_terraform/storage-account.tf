@@ -20,3 +20,27 @@ resource "azurerm_storage_share" "fileshare" {
   }
 }
 
+# Azure Container Registry
+resource "azurerm_container_registry" "acr" {
+  name                = "acrgrupp1${random_string.suffix.result}"
+  resource_group_name = azurerm_resource_group.storage_rg.name
+  location            = var.location
+  sku                 = "Basic"  # Basic, Standard eller Premium
+  admin_enabled       = true     # Aktiverar admin-användare (bra för dev/test)
+
+  tags = { environment = "staging" }
+}
+
+# (Valfritt) Output för att se login-server och admin-credentials
+output "acr_login_server" {
+  value = azurerm_container_registry.acr.login_server
+}
+
+output "acr_admin_username" {
+  value = azurerm_container_registry.acr.admin_username
+}
+
+output "acr_admin_password" {
+  value     = azurerm_container_registry.acr.admin_password
+  sensitive = true
+}
