@@ -41,7 +41,7 @@ resource "azurerm_service_plan" "asp" {
 
 # Linux Web App som kör container från ACR
 resource "azurerm_linux_web_app" "app" {
-  name                = "${var.prefix_app_name}-app"
+  name                = "${var.prefix_app_name}-app${random_string.suffix.result}"
   location            = var.location
   resource_group_name = azurerm_resource_group.storage_rg.name
   service_plan_id     = azurerm_service_plan.asp.id
