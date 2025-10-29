@@ -11,10 +11,10 @@ resource "azurerm_storage_account" "storage_terraform" {
 
 # Azure File Share
 resource "azurerm_storage_share" "fileshare" {
-  name                 = "data"
+  name               = "data"
   storage_account_id = azurerm_storage_account.storage_terraform.id
-  quota                = 3
-  enabled_protocol     = "SMB"
+  quota              = 3
+  enabled_protocol   = "SMB"
   metadata = {
     env = "staging"
   }
@@ -27,7 +27,7 @@ resource "azurerm_container_registry" "acr" {
   location            = var.location
   sku                 = "Basic"
   admin_enabled       = true
-  tags = { environment = "staging" }
+  tags                = { environment = "staging" }
 }
 
 # App Service Plan (Linux)
@@ -35,7 +35,7 @@ resource "azurerm_service_plan" "asp" {
   name                = "${var.prefix_app_name}-asp"
   location            = var.location
   resource_group_name = azurerm_resource_group.storage_rg.name
-  sku_name            = "S1"     # inte 'sku'
+  sku_name            = "S1" # inte 'sku'
   os_type             = "Linux"
 }
 
@@ -55,8 +55,18 @@ resource "azurerm_linux_web_app" "app" {
     }
   }
 
+  storage_account {
+    name         = "duckdbmount"
+    type         = "AzureFiles"
+    account_name = azurerm_storage_account.storage_terraform.name
+    access_key   = azurerm_storage_account.storage_terraform.primary_access_key
+    share_name   = azurerm_storage_share.fileshare.name
+    mount_path   = "/mnt/data"
+  }
+
   app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
+    WEBSITES_PORT                       = "8501"
   }
 
   identity { type = "SystemAssigned" }
