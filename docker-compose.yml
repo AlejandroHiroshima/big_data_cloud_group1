@@ -7,7 +7,7 @@ services:
       dockerfile: dockerfile.dwh
     ports:
       - "3000:3000"
-    image: crgrupp1.azurecr.io/hr-pipeline:latest
+    image: acrgrupp13o5rc6.azurecr.io/hr-pipeline:latest
 
   dashboard:
     build:
@@ -15,4 +15,4 @@ services:
       dockerfile: dockerfile.dashboard
     ports:
       - "8501:8501"
-    image: crgrupp1.azurecr.io/dashboard:latest
+    image: acrgrupp1xrwzyj.azurecr.io/dashboard:latest
