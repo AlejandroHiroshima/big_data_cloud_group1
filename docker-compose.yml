@@ -7,7 +7,7 @@ services:
       dockerfile: dockerfile.dwh
     ports:
       - "3000:3000"
-    image: acrgrupp1xrwzyj.azurecr.io/hr-pipeline:latest
+    image: acrgrupp1db0rgc.azurecr.io/hr-pipeline:latest #ändra sen till din egna acrgrupp1xxxxxx
 
   dashboard:
     build:
@@ -15,4 +15,4 @@ services:
       dockerfile: dockerfile.dashboard
     ports:
       - "8501:8501"
-    image: acrgrupp1xrwzyj.azurecr.io/dashboard:latest
+    image: acrgrupp1db0rgc.azurecr.io/dashboard:latest #ändra sen till din egna acrgrupp1xxxxxx
