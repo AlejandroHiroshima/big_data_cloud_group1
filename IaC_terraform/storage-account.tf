@@ -35,7 +35,7 @@ resource "azurerm_service_plan" "asp" {
   name                = "${var.prefix_app_name}-asp"
   location            = var.location
   resource_group_name = azurerm_resource_group.storage_rg.name
-  sku_name            = "S1" # inte 'sku'
+  sku_name            = "S1" 
   os_type             = "Linux"
 }
 
@@ -48,8 +48,7 @@ resource "azurerm_linux_web_app" "app" {
 
   site_config {
     application_stack {
-      docker_registry_url      = "https://${azurerm_container_registry.acr.login_server}"
-      docker_image_name        = "${var.prefix_app_name}:latest"
+      docker_image_name = "${azurerm_container_registry.acr.login_server}/dashboard:latest"
       docker_registry_username = azurerm_container_registry.acr.admin_username
       docker_registry_password = azurerm_container_registry.acr.admin_password
     }
@@ -75,7 +74,6 @@ resource "azurerm_linux_web_app" "app" {
   depends_on = [azurerm_container_registry.acr]
 }
 
-# Outputs
 output "acr_login_server" {
   value = azurerm_container_registry.acr.login_server
 }
