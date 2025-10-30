@@ -1,52 +1,48 @@
 # HR Analytics – Cloud Deployment  
 
-This project focuses on deploying an ETL pipeline to Azure using Terraform for infrastructure as code. The pipeline incorporates a DLT script and DBT transformations, which are visualized in a Streamlit dashboard and orchestrated through Dagster.
+This project builds upon the <a href="https://github.com/AlejandroHiroshima/Data_warehouse_grupp4_DE24" target="_blank" rel="noopener noreferrer">
+  HR Analytics Proof of Concept ↗
+</a>, which implemented a modern data stack for analyzing job advertisements from Arbetsförmedlingen JobTech API. 
+The previous version used DLT for ingestion, DBT for data transformation, and Streamlit for dashboard visualization within a local environment and Snowflake-based data warehouse.
+In this continuation, the solution is extended to a cloud-based deployment on Microsoft Azure, leveraging:
+  
+- Terraform for Infrastructure as Code (IaC)
+- Azure Container Registry (ACR) and App Service for hosting
+- Dagster for orchestration
+- DuckDB as the analytical data warehouse
+  
+This version emphasizes scalability, automation and cost efficiency, transforming the original proof of concept into a production-ready, reproducible cloud pipeline architecture.
 
-### Steps for Cloud Deployment
-1.	Provision Azure Storage Account with File Share
-   - Created an Azure Storage Account and configured an Azure File Share for persistent data storage and pipeline artifacts.
-2.	Set Up Azure Container Registry (ACR)
-   - Deployed an Azure Container Registry to store and manage Docker images for the pipeline components.
-o	Built and pushed container images to ACR.
-3.	Deploy Container Instances for Dagster Orchestration
-   - Launched Azure Container Instances via the Azure CLI to run the Dagster orchestration service.
-   - Configured environment variables and network settings for secure communication between containers.
-4.	Create an Azure Web App for the Streamlit Dashboard
-   - Provisioned an Azure Web App to host the Streamlit dashboard for data visualization.
-5.	Integrate Container Registry with Web App
-   - Connected the Azure Web App to the Azure Container Registry to automatically deploy the latest dashboard image from Docker.
-   - Enabled continuous deployment from ACR.
-6.	Mount Azure File Share to the Web App
-o	Configured a path mapping in the Web App to mount the Azure File Share, enabling shared data access between components.
-7.	Validate and Monitor Deployment
-   - Verified deployment success using terraform plan and terraform apply outputs.
-   - Implemented basic monitoring through Azure Portal and logs to ensure service health.
 
-### Cost Estimation – Cloud Deployment (Azure)
-Cost estimation are based on following plan
+| **Layer**              | **Technology / Tools**    | **Purpose**                            |
+| ---------------------- | ------------------------- | -------------------------------------- |
+| **Ingestion (EL)**     | DLT, Dagster              | Extracts job ad data from JobTech API  |
+| **Transformation (T)** | DBT                       | Cleans, models, and creates data marts |
+| **Storage (DW)**       | DuckDB (Azure File Share) | Lightweight data warehouse             |
+| **Orchestration**      | Dagster                   | Automates daily ETL jobs               |
+| **Visualization**      | Streamlit                 | Dashboard for HR analytics             |
+| **Infrastructure**     | Terraform                 | Provisions and manages Azure resources |
+
+
+### Cost Estimation 
+
+Cost estimation are based on following assumptions: 
 
 •	The DuckDB data warehouse is updated once per day as part of the scheduled ETL workflow.
 
 •	The deployed Streamlit dashboard remains continuously available to users for real-time access and monitoring.
 
-##### The following is an estimated monthly cost summary for running the data pipeline on Azure
-| **Resource**                                    | **Pricing Details**                                                                                            | **Estimated Monthly Cost (USD)** |
-| ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| **Container Instance – Pipeline** | 1 container group (1 vCPU, 4 GB RAM, running continuously). Price: $0.0000129 per vCPU/s + $0.0000014 per GB/s | **≈ $48,94**                     |
-| **Container Instance – Dashboard**    | 1 container group (1 vCPU, 4 GB RAM, running continuous). Price: $0.0000129 per vCPU/s + $0.0000014 per GB/s                                                 | **≈ $48,94**                     |
-| **Storage Account (Azure File Share)**          | 10 GB stored, <10,000 operations per month                                                                     | **$0.26**                        |
-| **App Service Plan (Basic B1)**                 | 1 Core, 1.75 GB RAM, 10 GB storage ($0.018/hour × 730 hours)                                                   | **$13.14**                       |
-| **Azure Container Registry (Basic B1)**       | $0.167/day × 30 days (includes 10 GB extra storage)                                                            | **$6.00**                        |
-|                                                 |                                                                                                                | **Total ≈ $117.28 / month**      |
+#### Azure Deployment 
 
+| **Type**                | **Estimated Monthly Cost (USD)** | **Description**                                     |
+| ---------------------------- | -------------------------- | --------------------------------------------- |
+| App Service (P0v3)           | ≈ 64.97 $                |Hosts streamlit dashboard.Runs 24/7                  |
+| Container Registry (Basic B1)   | ≈ 6 $                | Stores Docker images for pipeline & dashboard |
+| Storage account - Azure File Share (10 GB)     | ≈ 0.27 $                   | Stores DuckDB & profiles.yml files                     |
+| Container Instance (Dagster) | ≈ 1.01 $                    | Runs 30 min daily 
+| **Total / Month**            | **≈ 72.25 $**            |                |
 
-| **Resource Group**               | **Monthly Cost (USD)** |
-| -------------------------------- | ---------------------- |
-| Containers (2×)                  | $96.54                 |
-| Storage                          | $0.26                  |
-| Web App                          | $13.14                 |
-| Container Registry               | $5.00                  |
-| **Total Estimated Monthly Cost** | **≈ $117.28 / month**  |
+<sub>**Note:** The Dagster container is executed once per day (~30 minutes runtime), while the App Service runs continuously to keep the dashboard available 24/7.</sub>
 
 
 ### Project Structure Overview
