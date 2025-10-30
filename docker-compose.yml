@@ -1,18 +1,18 @@
 version: "3.9"
 
 services:
-  dwh_pipeline:
+  hr-pipeline:
     build:
       context: .
       dockerfile: dockerfile.dwh
+    image: acrgrupp11id015.azurecr.io/hr-pipeline:latest # ändra här till din ACR
     ports:
       - "3000:3000"
-    image: acrgrupp1db0rgc.azurecr.io/hr-pipeline:latest #ändra sen till din egna acrgrupp1xxxxxx
 
   dashboard:
     build:
       context: .
       dockerfile: dockerfile.dashboard
+    image: acrgrupp11id015.azurecr.io/dashboard:latest # ändra här till din ACR
     ports:
-      - "8501:8501"
-    image: acrgrupp1db0rgc.azurecr.io/dashboard:latest #ändra sen till din egna acrgrupp1xxxxxx
+      - "8501:8501" 
