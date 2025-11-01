@@ -279,42 +279,61 @@ Cost estimation are based on following assumptions:
 
 ``` 
 BIG_DATA_CLOUD_GROUP1/
-├─ dagster_home/
-├─ dashboard/
-│  ├─ connect_duck_pond.py
-│  ├─ dashboard.py
-│  ├─ plots.py
-│  └─ run_dashboard.py
-├─ data_extract_load/
-│  └─ load_job_ads.py
-├─ data_transformation/
-│  ├─ models/
-│  │  ├─ sources.yml
-│  │  ├─ schema.yml
-│  │  ├─ src_*.sql
-│  │  ├─ dim_*.sql
-│  │  ├─ fct_job_ads.sql
-│  │  └─ mart_*.sql
-│  ├─ dbt_project.yml
-│  └─ profiles.yml
-├─ duck_pond/
-│  └─ job_ads.duckdb
-├─ orchestration/
-│  └─ definitions.py
-├─ IaC_terraform/
-│  ├─ providers.tf
-│  ├─ resource-group.tf
-│  ├─ storage-account.tf
-│  ├─ random.tf
-│  ├─ input-variables.tf
-│  └─ outputs.tf
-├─ files/
-├─ logs/
-├─ docker-compose.yml
-├─ dockerfile.dashboard
-├─ dockerfile.dwh
-├─ requirements.txt
-├─ requirements_mac.txt
-└─ README.md
+│
+├── dagster_home/                     # Dagster configuration and metadata
+│
+├── dashboard/                        # Streamlit dashboard application
+│   ├── connect_duck_pond.py           # Connects to DuckDB or Azure Blob
+│   ├── dashboard.py                   # Main dashboard UI logic
+│   └── plots.py                       # Visualization functions (Plotly)
+│
+├── data_extract_load/                # Data ingestion layer (DLT)
+│   ├── __pycache__/                   # Compiled cache
+│   └── load_job_ads.py                # Extracts & loads JobTech API data
+│
+├── data_transformation/              # Data transformation with dbt
+│   ├── dbt_packages/                  # Installed dbt dependencies
+│   ├── logs/                          # dbt run logs
+│   ├── macros/                        # Custom dbt macros
+│   ├── models/                        # Dimensional modeling
+│   │   ├── dim/                       # Dimension tables
+│   │   ├── fct/                       # Fact tables
+│   │   └── mart/                      # Data marts for dashboard
+│   ├── src/                           # Source definitions
+│   ├── target/                        # dbt compiled files & artifacts
+│   ├── dbt_project.yml                # dbt project configuration
+│   ├── package-lock.yml               # Dependency lock file
+│   └── packages.yml                   # dbt package requirements
+│
+├── duck_pond/                        # Local or cloud DuckDB storage
+│   ├── .gitkeep                       # Keeps folder tracked in Git
+│   └── job_ads.duckdb                 # DuckDB database file
+│
+├── files/                            # Miscellaneous assets / configs
+│
+├── IaC_terraform/                    # Infrastructure as Code (Terraform)
+│   ├── .terraform/                    # Terraform internal files
+│   ├── .gitignore                     # Terraform ignore list
+│   ├── .terraform.lock.hcl            # Provider lock file
+│   ├── main.tf                        # Main Terraform configuration
+│   ├── profiles.yml                   # dbt profiles (for Azure)
+│   ├── terraform.tfstate              # Terraform state file
+│   └── terraform.tfstate.backup       # Terraform backup state
+│
+├── logs/                             # General pipeline or Dagster logs
+│
+├── orchestration/                    # Dagster orchestration layer
+│   ├── __pycache__/                   # Compiled cache
+│   ├── logs/                          # Dagster run logs
+│   └── definitions.py                 # Dagster assets, jobs, schedules
+│
+├── docker-compose.yml                # Local multi-container setup
+├── dockerfile.dashboard              # Dockerfile for Streamlit dashboard
+├── dockerfile.dwh                    # Dockerfile for ETL (Dagster + dbt + dlt)
+│
+├── README.md                         # Project documentation
+├── requirements.txt                  # Python dependencies
+└── requirements_mac.txt              # MacOS-specific dependencies
+
 
 ```
