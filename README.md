@@ -100,7 +100,7 @@ image: .azurecr.io/hr-pipeline:latest
 ```yaml
 image: acrgrupp1abc123.azurecr.io/hr-pipeline:latest
 ```
-<img src="1.png" alt="Bild 1" width="700">
+<img src="files/1.png" alt="Bild 1" width="700">
 
 #### Step 3: Build Docker Images
 
@@ -117,7 +117,8 @@ docker compose build
 ##### 4.1 Retrieve ACR credentials
 In the Azure Portal:
 ###### Container Registry → Access keys (under Settings)
-<img src="2.png" alt="Bild 1" width="700">
+<img src="files/2.png" alt="Bild 1" width="700">
+
 
 Copy:
 - **Username:** same as your ACR name
@@ -146,7 +147,8 @@ In the Azure Portal, click the Cloud Shell icon (PowerShell) in the top navigati
 ##### 6.2 Run the following command
 Replace all placeholders (`<...>`) with your actual values:
 
-<img src="3.png" alt="Bild 1" width="700">
+<img src="files/3.png" alt="Bild 1" width="700">
+
 
 ```powershell
 az container create `
@@ -188,7 +190,8 @@ Wait until all jobs complete successfully
 Go to:
 ##### Azure Portal → Storage Account → File Shares → files
 You should now see a file named `job_ads.duckdb`.
-<img src="4.png" alt="Bild 1" width="700">
+<img src="files/4.png" alt="Bild 1" width="700">
+
 
 #### Step 8: Access the Streamlit Dashboard
 
@@ -337,3 +340,7 @@ BIG_DATA_CLOUD_GROUP1/
 
 
 ```
+
+### Thanks for checking out our project!
+Best regards,
+Alex, Erik & Eyoub
