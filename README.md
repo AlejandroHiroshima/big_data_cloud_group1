@@ -11,7 +11,7 @@ In this continuation, the solution is extended to a cloud-based deployment on Mi
 - Dagster for orchestration
 - DuckDB as the analytical data warehouse
   
-This version emphasizes scalability, automation and cost efficiency, transforming the original proof of concept into a production-ready, reproducible cloud pipeline architecture.
+This version emphasizes scalability, automation and cost efficiency, while transforming the original proof of concept into a production-ready, reproducible cloud pipeline architecture.
 
 ---
 
@@ -84,7 +84,7 @@ terraform apply -auto-approve -var="subscription_id=<your subscription ID>" -var
 ##### 2.1 Find your ACR name
 In the Azure Portal:
 ##### Resource Groups → grupp1-dashboard-rg → Container Registry
-Copy your ACR name (for example: `acrgrupp1abc12`3).
+Copy your ACR name (for example: `acrgrupp1abc123`).
 
 ##### 2.2 Edit `docker-compose.yml`
 Open the file in your project root and insert your ACR name between `image:` and `.azurecr.io/`.
@@ -190,6 +190,7 @@ Wait until all jobs complete successfully
 Go to:
 ##### Azure Portal → Storage Account → File Shares → files
 You should now see a file named `job_ads.duckdb`.
+
 <img src="files/4.png" alt="Bild 1" width="700">
 
 
@@ -261,8 +262,7 @@ Cost estimation are based on following assumptions:
 | **Snowflake Warehouse (X-Small)** | ≈ 15 $                    | Compute engine (1 credit/h × 7,5 h × $2). Runs 15 min daily    |
 | **Snowflake Storage (~10 GB)**    | ≈ 0.40 $                      | Cloud storage for raw & transformed tables |
 | **Azure File Share**              | —                            | Replaced by Snowflake storage.              |
-| **Total / Month**                 | **≈ 87.38 $**                | ≈ +83 % vs DuckDB deployment.               |
-
+| **Total / Month**                 | **≈ 87.38 $**                |
 ### Pros and Cons 
 
 | Aspect                         | **Azure + DuckDB**                       | **Azure + Snowflake**                        |
@@ -283,64 +283,64 @@ Cost estimation are based on following assumptions:
 ``` 
 BIG_DATA_CLOUD_GROUP1/
 │
-├── dagster_home/                     # Dagster configuration and metadata
+├── dagster_home/                    
 │
-├── dashboard/                        # Streamlit dashboard application
-│   ├── connect_duck_pond.py           # Connects to DuckDB or Azure Blob
-│   ├── dashboard.py                   # Main dashboard UI logic
-│   └── plots.py                       # Visualization functions (Plotly)
+├── dashboard/                       
+│   ├── connect_duck_pond.py           
+│   ├── dashboard.py                  
+│   └── plots.py                    
 │
-├── data_extract_load/                # Data ingestion layer (DLT)
-│   ├── __pycache__/                   # Compiled cache
-│   └── load_job_ads.py                # Extracts & loads JobTech API data
+├── data_extract_load/                
+│   ├── __pycache__/                   
+│   └── load_job_ads.py               
 │
-├── data_transformation/              # Data transformation with dbt
-│   ├── dbt_packages/                  # Installed dbt dependencies
-│   ├── logs/                          # dbt run logs
-│   ├── macros/                        # Custom dbt macros
-│   ├── models/                        # Dimensional modeling
-│   │   ├── dim/                       # Dimension tables
-│   │   ├── fct/                       # Fact tables
-│   │   └── mart/                      # Data marts for dashboard
-│   ├── src/                           # Source definitions
-│   ├── target/                        # dbt compiled files & artifacts
-│   ├── dbt_project.yml                # dbt project configuration
-│   ├── package-lock.yml               # Dependency lock file
-│   └── packages.yml                   # dbt package requirements
+├── data_transformation/              
+│   ├── dbt_packages/                 
+│   ├── logs/                         
+│   ├── macros/                       
+│   ├── models/                       
+│   │   ├── dim/                      
+│   │   ├── fct/                      
+│   │   └── mart/                     
+│   ├── src/                          
+│   ├── target/                      
+│   ├── dbt_project.yml              
+│   ├── package-lock.yml             
+│   └── packages.yml                 
 │
-├── duck_pond/                        # Local or cloud DuckDB storage
-│   ├── .gitkeep                       # Keeps folder tracked in Git
-│   └── job_ads.duckdb                 # DuckDB database file
+├── duck_pond/                       
+│   ├── .gitkeep                     
+│   └── job_ads.duckdb               
 │
-├── files/                            # Miscellaneous assets / configs
+├── files/                           
 │
-├── IaC_terraform/                    # Infrastructure as Code (Terraform)
-│   ├── .terraform/                    # Terraform internal files
-│   ├── .gitignore                     # Terraform ignore list
-│   ├── .terraform.lock.hcl            # Provider lock file
-│   ├── main.tf                        # Main Terraform configuration
-│   ├── profiles.yml                   # dbt profiles (for Azure)
-│   ├── terraform.tfstate              # Terraform state file
-│   └── terraform.tfstate.backup       # Terraform backup state
+├── IaC_terraform/                   
+│   ├── .terraform/                  
+│   ├── .gitignore                   
+│   ├── .terraform.lock.hcl          
+│   ├── main.tf                      
+│   ├── profiles.yml                 
+│   ├── terraform.tfstate            
+│   └── terraform.tfstate.backup     
 │
-├── logs/                             # General pipeline or Dagster logs
+├── logs/                            
 │
-├── orchestration/                    # Dagster orchestration layer
-│   ├── __pycache__/                   # Compiled cache
-│   ├── logs/                          # Dagster run logs
-│   └── definitions.py                 # Dagster assets, jobs, schedules
+├── orchestration/                   
+│   ├── __pycache__/                 
+│   ├── logs/                        
+│   └── definitions.py               
 │
-├── docker-compose.yml                # Local multi-container setup
-├── dockerfile.dashboard              # Dockerfile for Streamlit dashboard
-├── dockerfile.dwh                    # Dockerfile for ETL (Dagster + dbt + dlt)
+├── docker-compose.yml               
+├── dockerfile.dashboard            
+├── dockerfile.dwh                  
 │
-├── README.md                         # Project documentation
-├── requirements.txt                  # Python dependencies
-└── requirements_mac.txt              # MacOS-specific dependencies
+├── README.md                       
+├── requirements.txt                
+└── requirements_mac.txt            
 
 
 ```
 
-### Thanks for checking out our project!
+###### Thanks for checking out our project!
 Best regards,
 Alex, Erik & Eyoub
